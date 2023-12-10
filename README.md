@@ -82,6 +82,7 @@ To use a variable, you need to add a $ at the start of the line where you want t
 Here's a real-world example of how you would use a variable:
 ```
 $port = 80
+
 $example.com:{port} {
     respond "Hello, world!"
 }
@@ -91,6 +92,7 @@ You are free to use variables for any value. The only exception is ports. It is 
 **Do not do this**:
 ```
 $port = :80
+
 $example.com{port} {
     respond "Hello, world!"
 }
@@ -112,6 +114,7 @@ Here's how the above example looks with Stretchyfile:
 ```
 $domains = example.com,example.org,*.example.com,*.example.org
 $port = 80,443
+
 ${domains}:{ports} {
     respond "Hello, world!"
 }
@@ -123,7 +126,29 @@ Here's another way you can do it:
 ```
 $domains = example.com,example.org
 $port = 80,443
+
 ${domains}:{ports}, *.{domains}:{ports} {
+    respond "Hello, world!"
+}
+```
+
+And another way:
+```
+$tlds = .com,.org
+$port = 80,443
+
+$example{tlds}:{ports}, *.example{tlds}:{ports} {
+    respond "Hello, world!"
+}
+```
+
+And another:
+```
+$domains = example.com,example.org
+$domains = {domains},*.{domains}
+$port = 80,443
+
+${domains}:{ports} {
     respond "Hello, world!"
 }
 ```
