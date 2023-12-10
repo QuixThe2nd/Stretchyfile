@@ -87,7 +87,7 @@ $example.com:{port} {
 }
 ```
 
-You are free to use variables for any value. The only exceptions are ports. It is crucial that if you want to save a port to a variable, you **do not** include a `:`. This is important for mapping array variables which are explained further down.
+You are free to use variables for any value. The only exception is ports. It is crucial that if you want to save a port to a variable, you **do not** include a `:`. This is important for mapping array variables which are explained further down.
 **Do not do this**:
 ```
 $port = :80
