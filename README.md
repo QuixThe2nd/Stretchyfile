@@ -66,7 +66,7 @@ example.com:80, example.org:80, example.com:443, example.org:443 {
 
 ## Syntax
 
-The syntax of Stretchyfile is very similar to Caddyfile's syntax. In fact, you can input a raw Caddyfile and it will output the exact same Caddyfile. Any line of code that uses Stretchyfile-specific code, must start with a `$`.
+The syntax of Stretchyfile is very similar to Caddyfile's syntax. In fact, you can input a raw Caddyfile and it will output the exact same Caddyfile. Any line of code that uses Stretchyfile-specific code, must start with a `$`, otherwise it'll be skipped over.
 
 ### Variables
 
