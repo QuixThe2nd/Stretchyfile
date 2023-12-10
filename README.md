@@ -154,7 +154,7 @@ ${domains}:{ports} {
 ```
 
 ## Usage
-Using Stretchyfile is super simple. Clone this repo, or copy `strechy.py` to your machine.
+Using Stretchyfile is super simple. Clone this repo, or copy `stretchy.py` to your machine.
 
 If stretchy.py is in your Caddy directory, simply run:
 ```
