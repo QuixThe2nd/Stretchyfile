@@ -113,7 +113,7 @@ And the worst part is, this is a common setup. If you have multiple domains, use
 Here's how the above example looks with Stretchyfile:
 ```
 $domains = example.com,example.org,*.example.com,*.example.org
-$port = 80,443
+$ports = 80,443
 
 ${domains}:{ports} {
     respond "Hello, world!"
@@ -125,7 +125,7 @@ Simple, right?
 Here's another way you can do it:
 ```
 $domains = example.com,example.org
-$port = 80,443
+$ports = 80,443
 
 ${domains}:{ports}, *.{domains}:{ports} {
     respond "Hello, world!"
@@ -135,7 +135,7 @@ ${domains}:{ports}, *.{domains}:{ports} {
 And another way:
 ```
 $tlds = .com,.org
-$port = 80,443
+$ports = 80,443
 
 $example{tlds}:{ports}, *.example{tlds}:{ports} {
     respond "Hello, world!"
@@ -146,7 +146,7 @@ And another (yes, you can concat arrays):
 ```
 $domains = example.com,example.org
 $domains = {domains},*.{domains}
-$port = 80,443
+$ports = 80,443
 
 ${domains}:{ports} {
     respond "Hello, world!"
