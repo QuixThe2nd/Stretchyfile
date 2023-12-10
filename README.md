@@ -132,7 +132,7 @@ ${domains}:{ports}, *.{domains}:{ports} {
 Using Stretchyfile is super simple. Clone this repo, or copy `strechy.py` to your machine.
 Then run:
 ```
-stretchy.py /path/to/stretchyfile
+python3 stretchy.py /path/to/stretchyfile
 ```
 
 The compiled Caddyfile will be available at `/path/to/stretchyfile.caddy`.
