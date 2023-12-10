@@ -142,7 +142,7 @@ $example{tlds}:{ports}, *.example{tlds}:{ports} {
 }
 ```
 
-And another:
+And another (yes, you can concat arrays):
 ```
 $domains = example.com,example.org
 $domains = {domains},*.{domains}
