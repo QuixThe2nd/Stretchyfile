@@ -20,6 +20,7 @@ if '-V' in sys.argv:
         print('Print mode disabled')
 else:
     verbose = False
+    verbose_comment = False
 
 # Check if Stretchyfile exists
 if not os.path.isfile(stretchyfile_path):
