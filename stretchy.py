@@ -78,7 +78,11 @@ for line in stretchyfile.splitlines():
                             previous_char = line[line.find('{' + name + '}') - 1]
                             next_char = line[line.find('{' + name + '}') + len(name) + 2]
                             join = ', '
-                            if previous_char == ':':
+                            if previous_char == '.':
+                                # print all chars before {name} until a space is found
+                                # This specifies the subdomain(s) if any
+                                join += line[:line.find('{' + name + '}')].split(' ')[-1]
+                            elif previous_char == ':':
                                 # print all chars before {name} until a space is found
                                 # This specifies the domain if any, for a single domain to multiple port relationship
                                 join += line[:line.find('{' + name + '}')].split(' ')[-1]
