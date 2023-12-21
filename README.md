@@ -1,3 +1,5 @@
+<!-- @format -->
+
 # Stretchyfile
 
 Stretchyfile is a stretchy Caddyfile flavour. It is designed to simplify complex use-cases, by extending how variables function in Caddyfile.
@@ -183,4 +185,4 @@ python3 stretchy.py /etc/caddy/Stretchyfile
 
 ## Troubleshooting
 
-I have extensively tested this for my use-cases, but it is impossible for me to have caught every edge case. If your Stretchyfile isn't being transpiled properly, you can add a `-V` argument to the end to see what the transpiler is doing step-by-step to hopefully troubleshoot your issue.
+I have extensively tested this for my use-cases, but it is impossible for me to have caught every edge case. If your Stretchyfile isn't being transpiled properly, you can add a `-V` argument to the end to see what the transpiler is doing step-by-step to hopefully troubleshoot your issue. You can also optionally set `-V comment` to insert logs as comments in the Caddyfile instead of printing.

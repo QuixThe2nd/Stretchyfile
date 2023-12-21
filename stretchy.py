@@ -11,6 +11,13 @@ else:
 if '-V' in sys.argv:
     verbose = True
     print('Verbose mode enabled')
+    # Check next arg to see if comment mode is enabled
+    if len(sys.argv) > sys.argv.index('-V') + 1 and sys.argv[sys.argv.index('-V') + 1] == 'comment':
+        verbose_comment = True
+        print('Comment mode enabled')
+    else:
+        verbose_comment = False
+        print('Print mode disabled')
 else:
     verbose = False
 
@@ -23,21 +30,28 @@ with open(stretchyfile_path, 'r') as file:
     stretchyfile = file.read()
 
 
+variables = {}
+caddyfile = ""
+
 def log(*args):
+    global verbose, verbose_comment, caddyfile
     if verbose:
         for arg in args:
             if arg is not None:
-                print(arg, end=' ')
-        print()
+                if verbose_comment:
+                    caddyfile += '# VERBOSE: ' + ' '.join(str(arg).splitlines()) + '\n'
+                else:
+                    print(arg, end=' ')
+        if not verbose_comment:
+            print()
 
-variables = {}
-caddyfile = ""
 
 line_number = 0
 for line in stretchyfile.splitlines():
     line_number += 1
     if line.startswith("$"):  # Stretchy
-        log('--------------------------------\n\n\n\n--------------------------------\nLine:', line_number)
+        if not verbose_comment:
+            log('--------------------------------\n\n\n\n--------------------------------\nLine:', line_number)
         line = line[1:]  # Remove $
         # If first char is a space, add a space to fix indentation issues caused by the removal of $
         if line.startswith(' '):
