@@ -39,6 +39,9 @@ for line in stretchyfile.splitlines():
     if line.startswith("$"):  # Stretchy
         log('--------------------------------\n\n\n\n--------------------------------\nLine:', line_number)
         line = line[1:]  # Remove $
+        # If first char is a space, add a space to fix indentation issues caused by the removal of $
+        if line.startswith(' '):
+            line = ' ' + line
         if '=' in line:  # Variable Assignment
             name, value = line.split('=')
             log('\nVariable Assigned:', name, value)
