@@ -4,6 +4,7 @@ Stretchyfile is a stretchy Caddyfile flavour. It is designed to simplify complex
 ## Example
 
 ### Input Stretchyfile
+
 ```
 $port = 80
 $ports = 80,443
@@ -37,6 +38,7 @@ ${domains}:{ports} {
 ```
 
 ### Output Caddyfile
+
 ```
 :80 {
     respond "Hello, world!"
@@ -73,6 +75,7 @@ The syntax of Stretchyfile is very similar to Caddyfile's syntax. In fact, you c
 You can declare a variable at any point within your code. At the top, in the middle, wherever.
 
 Here's how you set a variable:
+
 ```
 $port = 80
 ```
@@ -80,6 +83,7 @@ $port = 80
 To use a variable, you need to add a $ at the start of the line where you want to use the variable. You then insert the variable name wrapped with `{}`.
 
 Here's a real-world example of how you would use a variable:
+
 ```
 $port = 80
 
@@ -90,6 +94,7 @@ $example.com:{port} {
 
 You are free to use variables for any value. The only exception is ports. It is crucial that if you want to save a port to a variable, you **do not** include a `:`. This is important for mapping array variables which are explained further down.
 **Do not do this**:
+
 ```
 $port = :80
 
@@ -99,9 +104,11 @@ $example.com{port} {
 ```
 
 ### Arrays
+
 Array's are why I made Stretchyfile. For sites with a more complicated setup, arrays are a life-saver.
 
 Here's an example of the problem I'm trying to solve:
+
 ```
 example.com:80, example.com:443, *.example.com:80, *.example.com:443, example.org:80, example.org:443, *.example.org:80, *.example.org:443 {
     respond "Hello, world!"
@@ -111,6 +118,7 @@ example.com:80, example.com:443, *.example.com:80, *.example.com:443, example.or
 And the worst part is, this is a common setup. If you have multiple domains, use multiple ports, or have many subdomains, I am sure your Caddyfile is a mess (like mine).
 
 Here's how the above example looks with Stretchyfile:
+
 ```
 $domains = example.com,example.org,*.example.com,*.example.org
 $ports = 80,443
@@ -123,6 +131,7 @@ ${domains}:{ports} {
 Simple, right?
 
 Here's another way you can do it:
+
 ```
 $domains = example.com,example.org
 $ports = 80,443
@@ -133,6 +142,7 @@ ${domains}:{ports}, *.{domains}:{ports} {
 ```
 
 And another way:
+
 ```
 $tlds = .com,.org
 $ports = 80,443
@@ -143,6 +153,7 @@ $example{tlds}:{ports}, *.example{tlds}:{ports} {
 ```
 
 And another (yes, you can concat arrays):
+
 ```
 $domains = example.com,example.org
 $domains = {domains},*.{domains}
@@ -154,14 +165,21 @@ ${domains}:{ports} {
 ```
 
 ## Usage
+
 Using Stretchyfile is super simple. Clone this repo, or copy `stretchy.py` to your machine.
 
 If stretchy.py is in your Caddy directory, simply run:
+
 ```
 python3 stretchy.py
 ```
 
 Otherwise, you can specify your path name:
+
 ```
 python3 stretchy.py /etc/caddy/Stretchyfile
 ```
+
+## Troubleshooting
+
+I have extensively tested this for my use-cases, but it is impossible for me to have caught every edge case. If your Stretchyfile isn't being transpiled properly, you can add a `-V` argument to the end to see what the transpiler is doing step-by-step to hopefully troubleshoot your issue.

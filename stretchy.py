@@ -1,24 +1,47 @@
 import sys
 import re
+import os
 
 
-if len(sys.argv) < 2:
+if len(sys.argv) < 2 or sys.argv[1].startswith('-'):
     stretchyfile_path = 'Stretchyfile'
 else:
     stretchyfile_path = sys.argv[1]
+
+if '-V' in sys.argv:
+    verbose = True
+    print('Verbose mode enabled')
+else:
+    verbose = False
+
+# Check if Stretchyfile exists
+if not os.path.isfile(stretchyfile_path):
+    print('Stretchyfile not found')
+    exit()
 
 with open(stretchyfile_path, 'r') as file:
     stretchyfile = file.read()
 
 
+def log(*args):
+    if verbose:
+        for arg in args:
+            if arg is not None:
+                print(arg, end=' ')
+        print()
+
 variables = {}
 caddyfile = ""
 
+line_number = 0
 for line in stretchyfile.splitlines():
+    line_number += 1
     if line.startswith("$"):  # Stretchy
+        log('--------------------------------\n\n\n\n--------------------------------\nLine:', line_number)
         line = line[1:]  # Remove $
         if '=' in line:  # Variable Assignment
             name, value = line.split('=')
+            log('\nVariable Assigned:', name, value)
             if '{' in value:
                 # Variable Usage in Variable Assignment
                 for name, new_value in variables.items():
@@ -44,8 +67,11 @@ for line in stretchyfile.splitlines():
         else:  # Variable Usage
             for name, value in variables.items():
                 if '{' + name + '}' in line:  # Replace Variable
+                    log('\n----\nVariable Used:', name, value)
                     # Count occurrences of {name} in line - This is done for many-to-many relationships between domains and ports
                     count = line.count('{' + name + '}')
+                    log('Variable Count:', count)
+                    log('Variable Type:', 'Array ' if ',' in value else 'Single ')
                     for i in range(count):
                         if ',' in value:
                             values = value.split(',')
@@ -63,11 +89,11 @@ for line in stretchyfile.splitlines():
                                 match = re.search(pattern, line)
                                 if match:
                                     join = match.group(1) + join
+                            log('\nReplacing: ' + '{' + name + '}\nWith: ' + join.join(values) + '\nBefore: ' + line + '\nAfter: ' + line.replace('{' + name + '}', join.join(values), 1))
                             line = line.replace('{' + name + '}', join.join(values), 1)
 
                         else:
                             line = line.replace('{' + name + '}', value)
-
     if line.startswith('#') or line == '':
         continue
     caddyfile += line + '\n'
