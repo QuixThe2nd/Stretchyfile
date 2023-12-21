@@ -58,6 +58,8 @@ for line in stretchyfile.splitlines():
             line = ' ' + line
         if '=' in line:  # Variable Assignment
             name, value = line.split('=')
+            name = name.strip()
+            value = value.strip()
             log('\nVariable Assigned:', name, value)
             if '{' in value:
                 # Variable Usage in Variable Assignment
@@ -92,6 +94,9 @@ for line in stretchyfile.splitlines():
                     for i in range(count):
                         if ',' in value:
                             values = value.split(',')
+                            # Trim spaces from values
+                            for i in range(len(values)):
+                                values[i] = values[i].strip()
                             previous_char = line[line.find('{' + name + '}') - 1]
                             next_char = line[line.find('{' + name + '}') + len(name) + 2]
                             join = ', '
@@ -112,6 +117,7 @@ for line in stretchyfile.splitlines():
                                     join = match.group(1) + join
                             log('\nReplacing: ' + '{' + name + '}\nWith: ' + join.join(values) + '\nBefore: ' + line + '\nAfter: ' + line.replace('{' + name + '}', join.join(values), 1))
                             line = line.replace('{' + name + '}', join.join(values), 1)
+
 
                         else:
                             line = line.replace('{' + name + '}', value)
