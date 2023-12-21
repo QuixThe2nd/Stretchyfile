@@ -1,5 +1,3 @@
-<!-- @format -->
-
 # Stretchyfile
 
 Stretchyfile is a stretchy Caddyfile flavour. It is designed to simplify complex use-cases, by extending how variables function in Caddyfile.
