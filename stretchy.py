@@ -48,8 +48,21 @@ def log(*args):
 
 
 line_number = 0
+conditions = 0
+open_condition = False
+condition = None
 for line in stretchyfile.splitlines():
     line_number += 1
+    if line.strip().startswith('if'):
+        condition = line[line.find('(') + 1:line.rfind(')')]
+        line = '@condition' + str(conditions) + ' {\n ' + condition.replace('&&', '\n') + '\n}\nhandle @condition' + str(conditions) + ' {\n'
+        conditions += 1
+        open_condition = True
+    # Close condition
+    elif open_condition and '}' in line:
+        open_condition = False
+        if line.count('}') == line.count('{') and 'else' in line:
+            line = line.replace('else', '\n@condition' + str(conditions) + ' {\n not {\n' + condition.replace('&&', '\n') + '\n}\n}\nhandle @condition' + str(conditions) + ' ')
     if line.startswith("$"):  # Stretchy
         if not verbose_comment:
             log('--------------------------------\n\n\n\n--------------------------------\nLine:', line_number)

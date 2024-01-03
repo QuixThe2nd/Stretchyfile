@@ -1,6 +1,6 @@
 # Stretchyfile
 
-Stretchyfile is a stretchy Caddyfile flavour. It is designed to simplify complex use-cases, by extending how variables function in Caddyfile.
+Stretchyfile is a stretchy Caddyfile flavour. It is designed to simplify complex use-cases, by extending how variables and conditions function in Caddyfile.
 
 ## Example
 
@@ -36,6 +36,13 @@ ${domains}:{port} {
 ${domains}:{ports} {
     respond "Hello, world!"
 }
+${domain}:{ports} {
+    if (host beta.example.com) {
+        respond "Hello, world!"
+    } else {
+        respond "Goodbye, world!"
+    }
+}
 ```
 
 ### Output Caddyfile
@@ -65,6 +72,23 @@ example.com:80, example.org:80 {
 example.com:80, example.org:80, example.com:443, example.org:443 {
     respond "Hello, world!"
 }
+example.com:80, example.com:443 {
+    @condition0 {
+        host beta.example.com
+    }
+    handle @condition0 {
+        respond "Hello, world!"
+    }
+    @condition1 {
+        not {
+            host beta.example.com
+        }
+    }
+    handle @condition1 {
+        respond "Goodbye, world!"
+    }
+}
+
 ```
 
 ## Syntax
@@ -162,6 +186,90 @@ $ports = 80,443
 
 ${domains}:{ports} {
     respond "Hello, world!"
+}
+```
+
+### If / Else Statements
+Caddyfile's if statements are great, but they can be a bit of a pain to use. Stretchyfile makes them a bit easier to use. Conditions are identical to Caddyfile's conditions. Though defining the if statement is a bit different. Stretchyfile uses a more uniform approach to if/else statements, matching the syntax of most programming languages.
+
+Let's say you have example.com, and you want to route beta.example.com to a different server block. Here's how you would do it in Caddyfile:
+
+```
+*.example.com {
+    @beta {
+        host beta.example.com
+    }
+    handle @beta {
+        respond "Hello, world!"
+    }
+    @not_beta {
+        not {
+            host beta.example.com
+        }
+    }
+    handle @not_beta {
+        respond "Hello, world!"
+    }
+}
+
+```
+
+The syntax is a bit difficult to remember, and it's a bit of a pain to write. Here's how you would do it in Stretchyfile:
+```
+*.example.com {
+    if (host beta.example.com) {
+        respond "Hello, world!"
+    } else {
+        respond "Hello, world!"
+    }
+}
+```
+
+A lot simpler, right? You can also use variables in your conditions:
+
+```
+$ports = 80, 443
+$*.example.com:{ports} {
+    if (host beta.example.com) {
+        respond "Hello, world!"
+    } else {
+        respond "Hello, world!"
+    }
+}
+```
+
+Have multiple conditions? Easy, just use `&&` like any other programming language:
+
+```
+*.example.com {
+    if (host beta.example.com && cookie beta) {
+        respond "Hello, world!"
+    } else {
+        respond "Hello, world!"
+    }
+}
+```
+
+Here is the Caddyfile equivalent:
+
+```
+*.example.com {
+    @beta {
+        host beta.example.com
+        cookie beta
+    }
+    handle @beta {
+        respond "Hello, world!"
+    }
+    @not_beta {
+        not {
+            host beta.example.com
+            cookie beta
+        }
+    }
+    handle @not_beta {
+        respond "Hello, world!"
+    }
 }
 ```
 
