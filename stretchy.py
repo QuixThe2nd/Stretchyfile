@@ -133,3 +133,6 @@ caddyfile_path = '/'.join(caddyfile_path)
 
 with open(caddyfile_path, 'w') as file:
     file.write(caddyfile)
+
+caddy_exec_path = os.popen('which caddy').read().strip()
+os.exec(caddy_exec_path + ' fmt --overwrite ' + caddyfile_path)
