@@ -148,4 +148,10 @@ with open(caddyfile_path, 'w') as file:
     file.write(caddyfile)
 
 caddy_exec_path = os.popen('which caddy').read().strip()
-os.exec(caddy_exec_path + ' fmt --overwrite ' + caddyfile_path)
+script_dir = os.path.dirname(os.path.realpath(__file__))
+os.system(caddy_exec_path + ' fmt --overwrite ' + script_dir + '/' + caddyfile_path)
+validation_response = os.popen(caddy_exec_path + ' validate --config ' + script_dir + '/' + caddyfile_path).read().strip()
+if 'Valid configuration' in validation_response:
+    print('Caddyfile generation successful')
+else:
+    print(validation_response)
